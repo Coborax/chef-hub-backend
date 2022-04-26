@@ -1,18 +1,25 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
-import { use } from 'passport';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
   constructor(
     @Inject('USER_REPOSITORY')
-    private photoRepository: Repository<User>,
+    private userRepository: Repository<User>,
   ) {}
 
   async findOne(username: string): Promise<User | undefined> {
-    return this.photoRepository.findOneBy({
+    return this.userRepository.findOneBy({
       username: username,
+    });
+  }
+
+  async create(username: string, plainPass: string): Promise<User> {
+    return this.userRepository.save({
+      username: username,
+      password: await bcrypt.hash(plainPass, 10),
     });
   }
 }

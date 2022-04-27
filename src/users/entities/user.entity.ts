@@ -9,6 +9,8 @@ export class User {
   username: string;
   @Column('text')
   name: string;
+  @Column({ type: 'text', nullable: true })
+  photoUrl: string;
   @Column('text')
   password: string;
   @OneToMany(() => Post, (post) => post.user)

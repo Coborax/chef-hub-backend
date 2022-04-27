@@ -11,13 +11,19 @@ export class UsersService {
   ) {}
 
   async findOne(username: string): Promise<User | undefined> {
-    return this.userRepository.findOneBy({
-      username: username,
+    return this.userRepository.findOne({
+      where: { username: username },
+      relations: ['posts'],
     });
   }
 
-  async create(username: string, plainPass: string): Promise<User> {
+  async create(
+    name: string,
+    username: string,
+    plainPass: string,
+  ): Promise<User> {
     return this.userRepository.save({
+      name: name,
       username: username,
       password: await bcrypt.hash(plainPass, 10),
     });

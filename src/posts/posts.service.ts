@@ -28,4 +28,20 @@ export class PostsService {
 
     return user.posts;
   }
+
+  async findPostsFromFollowers(username: string): Promise<Post[]> {
+    const user = await this.userRepository.findOne({
+      where: { username: username },
+      relations: ['following'],
+    });
+
+    const whereArr = user.following.map((user) => {
+      return { user: user };
+    });
+
+    return await this.postRepository.find({
+      where: whereArr,
+      relations: ['user'],
+    });
+  }
 }

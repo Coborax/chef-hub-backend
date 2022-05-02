@@ -1,10 +1,12 @@
 import {
   Body,
+  ClassSerializerInterceptor,
   Controller,
   Get,
   Post,
   Request,
   UseGuards,
+  UseInterceptors,
 } from '@nestjs/common';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UsersService } from './users.service';
@@ -14,6 +16,7 @@ import { AuthGuard } from '@nestjs/passport';
 export class UsersController {
   constructor(private readonly usersService: UsersService) {}
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
     return this.usersService.create(
@@ -23,6 +26,7 @@ export class UsersController {
     );
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(AuthGuard('jwt'))
   @Get()
   get(@Request() req) {

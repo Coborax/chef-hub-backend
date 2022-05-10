@@ -6,7 +6,6 @@ import { UsersModule } from './users/users.module';
 import { PostsModule } from './posts/posts.module';
 import { DatabaseModule } from './database/database.module';
 import { ServeStaticModule } from '@nestjs/serve-static';
-import { doc } from 'prettier';
 import { join } from 'path';
 
 @Module({

@@ -2,6 +2,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { User } from './entities/user.entity';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { use } from 'passport';
 
 @Injectable()
 export class UsersService {
@@ -27,5 +28,14 @@ export class UsersService {
       username: username,
       password: await bcrypt.hash(plainPass, 10),
     });
+  }
+
+  async addFollower(username: string, followerUsername: string) {
+    const user = await this.findOne(username);
+    const follower = await this.findOne(followerUsername);
+
+    user.following.push(follower);
+
+    await this.userRepository.save(user);
   }
 }

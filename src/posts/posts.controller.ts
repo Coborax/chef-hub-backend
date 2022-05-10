@@ -5,6 +5,7 @@ import {
   Request,
   ClassSerializerInterceptor,
   UseInterceptors,
+  Param,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -24,5 +25,11 @@ export class PostsController {
   @Get('feed')
   findFeed(@Request() req) {
     return this.postsService.findPostsFromFollowers(req.user.username);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':id')
+  findById(@Param('id') id: number) {
+    return this.postsService.findPostById(id);
   }
 }

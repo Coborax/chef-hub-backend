@@ -17,7 +17,9 @@ export class PostsService {
   ) {}
 
   findAll(): Promise<Post[]> {
-    return this.postRepository.find();
+    return this.postRepository.find({
+      relations: ['user'],
+    });
   }
 
   async findUserPosts(username: string): Promise<Post[]> {
@@ -41,6 +43,15 @@ export class PostsService {
 
     return await this.postRepository.find({
       where: whereArr,
+      relations: ['user'],
+    });
+  }
+
+  async findPostById(id: number): Promise<Post> {
+    return await this.postRepository.findOne({
+      where: {
+        id,
+      },
       relations: ['user'],
     });
   }

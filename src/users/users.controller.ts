@@ -3,6 +3,7 @@ import {
   ClassSerializerInterceptor,
   Controller,
   Get,
+  Param,
   Post,
   Request,
   UseGuards,
@@ -26,10 +27,23 @@ export class UsersController {
     );
   }
 
+  @UseGuards(AuthGuard('jwt'))
+  @Post('follow/:username')
+  follow(@Param('username') username: string, @Request() req) {
+    return this.usersService.addFollower(req.user.username, username);
+  }
+
   @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(AuthGuard('jwt'))
   @Get()
   get(@Request() req) {
     return this.usersService.findOne(req.user.username);
+  }
+
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':username')
+  getUser(@Param('username') username: string) {
+    return this.usersService.findOne(username);
   }
 }

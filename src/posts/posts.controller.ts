@@ -46,7 +46,8 @@ export class PostsController {
       file.buffer,
       req.user.username,
     );
-    
+  }
+
   @UseGuards(AuthGuard('jwt'))
   @Get(':id')
   findById(@Param('id') id: number) {

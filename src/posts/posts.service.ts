@@ -63,10 +63,10 @@ export class PostsService {
     console.log(createDto);
 
     return this.postRepository.save({
-      title: createDto.title,
-      desc: createDto.desc,
+      title: createDto['title'],
+      desc: createDto['desc'],
       user: user,
-      photoUrl: 'http://localhost:3001/' + filename,
+      photoUrl: 'http://localhost:3000/' + filename,
     });
   }
 }

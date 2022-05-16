@@ -40,11 +40,6 @@ export class PostsController {
     @Request() req,
   ) {
     console.log(file);
-    return this.postsService.create(
-      createDto,
-      file.originalname,
-      file.buffer,
-      req.user.username,
-    );
+    return this.postsService.create(createDto, file.buffer, req.user.username);
   }
 }

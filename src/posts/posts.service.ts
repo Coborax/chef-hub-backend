@@ -6,6 +6,7 @@ import { Post } from './entities/post.entity';
 import { User } from '../users/entities/user.entity';
 import { use } from 'passport';
 import * as fs from 'fs';
+import { v4 as uuid } from 'uuid';
 
 class Photo {}
 
@@ -49,7 +50,6 @@ export class PostsService {
 
   async create(
     createDto: CreatePostDto,
-    filename: string,
     buffer: Buffer,
     username: string,
   ): Promise<Post> {
@@ -57,6 +57,7 @@ export class PostsService {
       where: { username: username },
     });
 
+    const filename = username + uuid();
     const path = './content/' + filename;
     fs.createWriteStream(path).write(buffer);
 

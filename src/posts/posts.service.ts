@@ -23,6 +23,10 @@ export class PostsService {
     return this.postRepository.find();
   }
 
+  find(id: number) {
+    return this.postRepository.findOne({ where: { id }, relations: ['user'] });
+  }
+
   async findUserPosts(username: string): Promise<Post[]> {
     const user = await this.userRepository.findOne({
       where: { username: username },

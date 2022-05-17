@@ -24,7 +24,10 @@ export class PostsService {
   }
 
   find(id: number) {
-    return this.postRepository.findOne({ where: { id }, relations: ['user'] });
+    return this.postRepository.findOne({
+      where: { id },
+      relations: ['user', 'comments', 'comments.user'],
+    });
   }
 
   async findUserPosts(username: string): Promise<Post[]> {

@@ -1,34 +1,30 @@
-import { WebSocketGateway, SubscribeMessage, MessageBody } from '@nestjs/websockets';
+import {
+  WebSocketGateway,
+  SubscribeMessage,
+  MessageBody,
+  WebSocketServer,
+} from '@nestjs/websockets';
 import { CommentsService } from './comments.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { UpdateCommentDto } from './dto/update-comment.dto';
+import { Server, Socket } from 'socket.io';
 
-@WebSocketGateway()
+@WebSocketGateway({
+  cors: {
+    origin: '*',
+  },
+})
 export class CommentsGateway {
+  @WebSocketServer()
+  server: Server;
+
   constructor(private readonly commentsService: CommentsService) {}
 
   @SubscribeMessage('createComment')
   create(@MessageBody() createCommentDto: CreateCommentDto) {
-    return this.commentsService.create(createCommentDto);
-  }
-
-  @SubscribeMessage('findAllComments')
-  findAll() {
-    return this.commentsService.findAll();
-  }
-
-  @SubscribeMessage('findOneComment')
-  findOne(@MessageBody() id: number) {
-    return this.commentsService.findOne(id);
-  }
-
-  @SubscribeMessage('updateComment')
-  update(@MessageBody() updateCommentDto: UpdateCommentDto) {
-    return this.commentsService.update(updateCommentDto.id, updateCommentDto);
-  }
-
-  @SubscribeMessage('removeComment')
-  remove(@MessageBody() id: number) {
-    return this.commentsService.remove(id);
+    this.commentsService
+      .create(createCommentDto)
+      .then((newComment) =>
+        this.server.emit('post:' + newComment.post.id, newComment),
+      );
   }
 }

@@ -35,6 +35,13 @@ export class UsersController {
 
   @UseInterceptors(ClassSerializerInterceptor)
   @UseGuards(AuthGuard('jwt'))
+  @Get('search/:username')
+  searchUser(@Param('username') username: string) {
+    return this.usersService.search(username);
+  }
+
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseGuards(AuthGuard('jwt'))
   @Get()
   get(@Request() req) {
     return this.usersService.findOne(req.user.username);

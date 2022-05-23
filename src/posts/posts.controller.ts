@@ -35,7 +35,6 @@ export class PostsController {
   @UseGuards(AuthGuard('jwt'))
   @Get('feed')
   findFeed(@Request() req) {
-    console.log('Heeeeey');
     return this.postsService.findPostsFromFollowers(req.user.username);
   }
 
@@ -47,7 +46,6 @@ export class PostsController {
     @UploadedFile() file: Express.Multer.File,
     @Request() req,
   ) {
-    console.log(createDto);
     return this.postsService.create(
       createDto,
       file.buffer,

@@ -27,7 +27,7 @@ export class PostsController {
   }
 
   @UseGuards(AuthGuard('jwt'))
-  @Get(':id')
+  @Get('get/:id')
   find(@Param('id') id: number) {
     return this.postsService.find(id);
   }
@@ -36,6 +36,7 @@ export class PostsController {
   @UseGuards(AuthGuard('jwt'))
   @Get('feed')
   findFeed(@Request() req) {
+    console.log('Heeeeey');
     return this.postsService.findPostsFromFollowers(req.user.username);
   }
 

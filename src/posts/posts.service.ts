@@ -85,7 +85,7 @@ export class PostsService {
       title: createDto['title'],
       desc: createDto['desc'],
       user: user,
-      photoUrl: 'http://localhost:3000/' + filename,
+      photoUrl: 'http://192.168.228.110:3000/' + filename,
     });
   }
 }

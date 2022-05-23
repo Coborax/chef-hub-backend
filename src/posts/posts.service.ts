@@ -58,17 +58,16 @@ export class PostsService {
   async create(
     createDto: CreatePostDto,
     buffer: Buffer,
+    mime: string,
     username: string,
   ): Promise<Post> {
     const user = await this.userRepository.findOne({
       where: { username: username },
     });
 
-    const filename = username + uuid();
+    const filename = username + uuid() + '.' + mime.replace('image/', '');
     const path = './content/' + filename;
     fs.createWriteStream(path).write(buffer);
-
-    console.log(createDto);
 
     return this.postRepository.save({
       title: createDto['title'],

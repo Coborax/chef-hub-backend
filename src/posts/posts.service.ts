@@ -63,7 +63,7 @@ export class PostsService {
         id,
       },
       relations: ['user'],
-    });
+    }
   }
 
   async create(

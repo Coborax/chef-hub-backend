@@ -9,6 +9,7 @@ import {
   Post,
   UploadedFile,
   Body,
+  Param,
 } from '@nestjs/common';
 import { PostsService } from './posts.service';
 import { AuthGuard } from '@nestjs/passport';
@@ -23,6 +24,12 @@ export class PostsController {
   @Get()
   findAll(@Request() req) {
     return this.postsService.findUserPosts(req.user.username);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Get(':id')
+  find(@Param('id') id: number) {
+    return this.postsService.find(id);
   }
 
   @UseInterceptors(ClassSerializerInterceptor)
@@ -40,12 +47,8 @@ export class PostsController {
     @UploadedFile() file: Express.Multer.File,
     @Request() req,
   ) {
-    return this.postsService.create(
-      createDto,
-      file.filename,
-      file.buffer,
-      req.user.username,
-    );
+    console.log(file);
+    return this.postsService.create(createDto, file.buffer, req.user.username);
   }
 
   @UseGuards(AuthGuard('jwt'))

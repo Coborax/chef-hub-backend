@@ -1,13 +1,14 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { User } from './entities/user.entity';
-import { Like, Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
+import { Like } from 'typeorm';
+import { IUserRepo } from './user-repo.interface';
 
 @Injectable()
 export class UsersService {
   constructor(
     @Inject('USER_REPOSITORY')
-    private userRepository: Repository<User>,
+    private userRepository: IUserRepo,
   ) {}
 
   async findOne(username: string): Promise<User | undefined> {

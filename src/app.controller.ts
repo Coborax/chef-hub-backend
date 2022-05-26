@@ -7,7 +7,6 @@ import { AuthService } from './auth/auth.service';
 export class AppController {
   constructor(private authService: AuthService) {}
 
-  //TODO: Remove magic string and convert to type
   @UseGuards(AuthGuard('local'))
   @Post('auth/login')
   async login(@Request() req) {

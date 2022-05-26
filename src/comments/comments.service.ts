@@ -1,20 +1,19 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { Comment } from './entities/comment.entity';
-import { Repository } from 'typeorm';
-import { User } from '../users/entities/user.entity';
-import { Post } from '../posts/entities/post.entity';
-import { userProviders } from '../users/user.provider';
+import { IPostRepo } from '../posts/post-repo.interface';
+import { IUserRepo } from '../users/user-repo.interface';
+import { ICommentRepo } from './comment-repo.interface';
 
 @Injectable()
 export class CommentsService {
   constructor(
     @Inject('COMMENTS_REPOSITORY')
-    private commentsRepository: Repository<Comment>,
+    private commentsRepository: ICommentRepo,
     @Inject('USER_REPOSITORY')
-    private userRepository: Repository<User>,
+    private userRepository: IUserRepo,
     @Inject('POST_REPOSITORY')
-    private postRepository: Repository<Post>,
+    private postRepository: IPostRepo,
   ) {}
 
   async create(createCommentDto: CreateCommentDto): Promise<Comment> {

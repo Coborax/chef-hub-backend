@@ -1,22 +1,18 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
-import { UpdatePostDto } from './dto/update-post.dto';
-import { Repository } from 'typeorm';
 import { Post } from './entities/post.entity';
-import { User } from '../users/entities/user.entity';
-import { use } from 'passport';
 import * as fs from 'fs';
 import { v4 as uuid } from 'uuid';
-
-class Photo {}
+import { IUserRepo } from '../users/user-repo.interface';
+import { IPostRepo } from './post-repo.interface';
 
 @Injectable()
 export class PostsService {
   constructor(
     @Inject('POST_REPOSITORY')
-    private postRepository: Repository<Post>,
+    private postRepository: IPostRepo,
     @Inject('USER_REPOSITORY')
-    private userRepository: Repository<User>,
+    private userRepository: IUserRepo,
   ) {}
 
   findAll(): Promise<Post[]> {

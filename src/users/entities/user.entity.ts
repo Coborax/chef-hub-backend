@@ -30,6 +30,9 @@ export class User {
   @ManyToMany(() => User)
   @JoinTable()
   following: User[];
+  @ManyToMany(() => Post)
+  @JoinTable()
+  likedPosts: Post[];
 
   constructor(partial: Partial<User>) {
     Object.assign(this, partial);

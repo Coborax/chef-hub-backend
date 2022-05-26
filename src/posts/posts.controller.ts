@@ -38,6 +38,20 @@ export class PostsController {
     return this.postsService.findPostsFromFollowers(req.user.username);
   }
 
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseGuards(AuthGuard('jwt'))
+  @Get('like/:id')
+  like(@Request() req, @Param('id') id: number) {
+    return this.postsService.like(req.user.username, id);
+  }
+
+  @UseInterceptors(ClassSerializerInterceptor)
+  @UseGuards(AuthGuard('jwt'))
+  @Get('unlike/:id')
+  unlike(@Request() req, @Param('id') id: number) {
+    return this.postsService.unlike(req.user.username, id);
+  }
+
   @Post('upload')
   @UseInterceptors(FileInterceptor('file'))
   @UseGuards(AuthGuard('jwt'))

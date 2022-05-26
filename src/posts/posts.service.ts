@@ -5,6 +5,7 @@ import * as fs from 'fs';
 import { v4 as uuid } from 'uuid';
 import { IUserRepo } from '../users/user-repo.interface';
 import { IPostRepo } from './post-repo.interface';
+import { use } from 'passport';
 
 @Injectable()
 export class PostsService {
@@ -71,5 +72,36 @@ export class PostsService {
       user: user,
       photoUrl: 'http://192.168.228.110:3000/' + filename,
     });
+  }
+
+  async like(username, id: number) {
+    const user = await this.userRepository.findOne({
+      where: { username: username },
+      relations: ['likedPosts'],
+    });
+
+    const post = await this.postRepository.findOne({
+      where: { id: id },
+    });
+
+    user.likedPosts.push(post);
+
+    return this.userRepository.save(user);
+  }
+
+  async unlike(username, id: number) {
+    const user = await this.userRepository.findOne({
+      where: { username: username },
+      relations: ['likedPosts'],
+    });
+
+    const post = await this.postRepository.findOne({
+      where: { id: id },
+    });
+
+    const index = user.likedPosts.indexOf(post);
+    user.likedPosts = user.likedPosts.splice(index, 1);
+
+    return this.userRepository.save(user);
   }
 }

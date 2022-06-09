@@ -70,7 +70,7 @@ export class PostsService {
       title: createDto['title'],
       desc: createDto['desc'],
       user: user,
-      photoUrl: 'https://chef-hub-vh6th.ondigitalocean.app/backend' + filename,
+      photoUrl: 'https://chef-hub-vh6th.ondigitalocean.app/backend/' + filename,
     });
   }
 
